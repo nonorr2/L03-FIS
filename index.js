@@ -2,12 +2,18 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const Datastore = require('nedb');
 
+console.log("Starting server...")
+
 const app = express();
 app.use(bodyParser.json());
-const port = 3000
+const port = (process.env.PORT ||  3000)
 const baseURL = '/api/v1';
 
 const db = new Datastore();
+
+app.get('/', (req, res) => {
+    res.send("<html><body><h1>Welcome to my server!</h1></body></html>")
+});
 
 app.get(baseURL + '/contacts', (req, res) => {
     console.log('-------> GET /contacts');
@@ -16,10 +22,16 @@ app.get(baseURL + '/contacts', (req, res) => {
     });
 });
 
-app.post(baseURL + '/contacts', (req, res) => {
+app.post(baseURL + '/contact', (req, res) => {
     console.log('-------> POST /contacts');
-    db.insert(req.body);
-    res.sendStatus(201);
+    db.find({ phone: parseInt(req.body.phone) }, (err, data) => {
+        if (data.length != 0) {
+            res.sendStatus(409);
+        } else {
+            db.insert(req.body);
+            res.sendStatus(201);
+        }
+    })
 });
 
 app.get(baseURL + '/contact', (req, res) => {
