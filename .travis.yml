@@ -17,16 +17,14 @@ install:
 - npm install 
 
 script: 
-- docker build -t apicontacts . 
+- docker build -t $HEROKU_APP_NAME . 
 
 deploy: 
   provider: heroku
   api_key: 
     secure: $HEROKU_API_KEY
 
-provider: script 
-
-skip_cleanup: true 
+provider: script
 
 script: 
 # push to heroku 
