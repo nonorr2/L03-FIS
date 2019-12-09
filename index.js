@@ -12,7 +12,7 @@ const baseURL = '/api/v1';
 const db = new Datastore();
 
 app.get('/', (req, res) => {
-    res.send("<html><body><h1>Welcome to my server!</h1></body></html>")
+    res.send("<html><body><h1>Desplegado automáticamente!</h1></body></html>")
 });
 
 app.get(baseURL + '/contacts', (req, res) => {
